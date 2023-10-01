@@ -76,13 +76,14 @@ export default function App() {
               Teun Schaeken
             </div>
             <div className="tracking-tight">
-              Software engineer specialized in&nbsp;
+              Software engineer specialized in Devops, Front-end development and Test Automation.
+              {/* Software engineer specialized in&nbsp;
               {/* <HighlightedComponent /> */}
-              <div className="inline-block"><HighlightedComponent text="Devops" times={{in: 2_000, out: 3_000}}/> </div>
+              {/* <div className="inline-block"><HighlightedComponent text="Devops" times={{in: 2_000, out: 3_000}}/> </div>
               ,&nbsp; 
               <div className="inline-block whitespace-nowrap"><HighlightedComponent text="Front-End development" times={{in: 2_500, out: 3_500}}/> </div>
               &nbsp;and&nbsp; 
-              <div className="inline-block whitespace-nowrap"><HighlightedComponent text="Test Automation" times={{in: 3_000, out: 4_000}}/> </div>
+              <div className="inline-block whitespace-nowrap"><HighlightedComponent text="Test Automation" times={{in: 3_000, out: 4_000}}/> </div> */} 
               {/* <div className="inline-block"><HighlightedComponent text="Test Automation" times={{in: 4_000, out: 5_000}}/> </div>
               . */}
 
