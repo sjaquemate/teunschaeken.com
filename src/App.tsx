@@ -14,16 +14,14 @@ const useTime = () => {
       clearInterval(intervalId);
     };
   }, []);
-
   return time;
 };
 
 function useOnMount<T>({ before, after }: { before: T, after: T }): T {
-  const [value, setValue] = useState<T>(before)
-  useEffect(() => {
-    setValue(after)
-  }, [])
-  return value
+  return useOnTime([
+    { time: 0, value: before },
+    { time: 10, value: after },
+  ])
 }
 
 function useOnTime<T>(timeseries: { time: number, value: T }[]): T {
@@ -41,7 +39,7 @@ function useOnTime<T>(timeseries: { time: number, value: T }[]): T {
 
 
 
-function HighlightedComponent({text, times}: {text: string, times: {in: number, out: number}}) {
+function HighlightedComponent({ text, times }: { text: string, times: { in: number, out: number } }) {
   return <div className={`bg-blue-400 transition-all ease-in-out
     ${useOnTime([
     { time: 0, value: 'w-[0%]' },
@@ -54,28 +52,43 @@ function HighlightedComponent({text, times}: {text: string, times: {in: number, 
   </div>
 }
 
+type VerticalFadeInProps = {
+  start: string
+  duration: string
+  yOffset: string
+}
+function useVerticalFadeIn(props: VerticalFadeInProps): React.CSSProperties {
+  return {
+    transition: 'all',
+    transitionDelay: props.start,
+    transitionDuration: props.duration,
+    ...useOnMount<React.CSSProperties>({
+      before: { translate: `0 ${props.yOffset}`, opacity: 0 },
+      after: { translate: `0 0` }
+    })
+  }
+}
 export default function App() {
 
   return (
     <div className="w-screen h-screen bg-neutral-50 overflow-hidden"  >
       <div className="flex h-full items-center ">
 
-        {/* <HighlightedComponent /> */}
-
         <div className="px-4 w-full flex flex-col gap-6 items-center justify-center">
           <div className={`
             flex justify-center bg-blue-400 rounded-full w-64 h-64 
-            transition duration-500 delay-500 ease-out
-            ${useOnMount({ before: "-translate-y-20 opacity-0", after: "" })}
+            transition-all duration-500 delay-500 ease-out
+            ${useOnMount({ before: "-translate-y-20 opacity-0 scale-110", after: "" })}
           `} />
-          <div className={`flex flex-col 
-            transition duration-1000 delay-1000 ease-out 
-            ${useOnMount({ before: "-translate-y-10 opacity-0", after: "" })} `}>
+          <div className="flex flex-col">
             <div className="text-center text-[2.5rem] tracking-tight"
+              style={useVerticalFadeIn({ start: "0", duration: '1000ms', yOffset: '-100%' })}
             >
               Teun Schaeken
             </div>
-            <div className="tracking-tight">
+            <div className="tracking-tight"
+              style={useVerticalFadeIn({ start: "500ms", duration: '1000ms', yOffset: '-100%' })}
+            >
               Software engineer specialized in Devops, Front-end development and Test Automation.
               {/* Software engineer specialized in&nbsp;
               {/* <HighlightedComponent /> */}
@@ -83,14 +96,17 @@ export default function App() {
               ,&nbsp; 
               <div className="inline-block whitespace-nowrap"><HighlightedComponent text="Front-End development" times={{in: 2_500, out: 3_500}}/> </div>
               &nbsp;and&nbsp; 
-              <div className="inline-block whitespace-nowrap"><HighlightedComponent text="Test Automation" times={{in: 3_000, out: 4_000}}/> </div> */} 
+              <div className="inline-block whitespace-nowrap"><HighlightedComponent text="Test Automation" times={{in: 3_000, out: 4_000}}/> </div> */}
               {/* <div className="inline-block"><HighlightedComponent text="Test Automation" times={{in: 4_000, out: 5_000}}/> </div>
               . */}
 
             </div>
             <div>
 
-              <div className="mt-4 mb-4 flex justify-center">
+              <div className="mt-4 mb-4 flex justify-center"
+                style={useVerticalFadeIn({ start: "1000ms", duration: '1000ms', yOffset: '-25%' })}
+
+              >
 
                 <a className=" bg-black
                   hover:text-white duration-500 
